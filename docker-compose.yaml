@@ -23,7 +23,7 @@ services:
   mysqlserver:
     container_name: mysqlserver
     image: mysql:8.0.21
-    restart: always
+    command: "--lower_case_table_names=1"
     expose:
       - "3306"
     ports:
@@ -52,7 +52,6 @@ services:
   emailserver:
     container_name: emailserver
     image: schickling/mailcatcher
-    restart: always
     expose:
       - "1080"
       - "1045"
