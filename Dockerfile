@@ -41,7 +41,7 @@ RUN echo "downloading vizservice.war" && curl -s https://api.github.com/repos/pr
 RUN mv vizservice.war ${JBOSS_HOME}/standalone/deployments/
 
 #--- DOWNLOAD LATEST VERSION FROM GITHUB
-RUN echo "downloading siga.war, sigaex.war, siga-le.war and sigawf.war" && curl -s https://api.github.com/repos/projeto-siga/siga/releases/38253920 \
+RUN echo "downloading siga.war, sigaex.war, siga-le.war and sigawf.war" && curl -s https://api.github.com/repos/projeto-siga/siga/releases/latest \
   | grep browser_download_url \
   | grep .war \
   | cut -d '"' -f 4 \
@@ -56,6 +56,12 @@ RUN mv siga-le.war ${JBOSS_HOME}/standalone/deployments/
 #--- ou copie diretamente do diretório siga-docker para fins de debug
 # COPY --chown=jboss ./*.war ${JBOSS_HOME}/standalone/deployments/
 
+#--- COPIANDO standalone.xml ---
 COPY --chown=jboss ./standalone.xml ${JBOSS_HOME}/standalone/configuration/standalone.xml
+
+#--- COPIANDO wait-for-it.sh ---
+RUN mkdir  bin
+COPY ./wait-for-it.sh bin/wait-for-it.sh
+RUN sudo chmod +x bin/wait-for-it.sh
 
 EXPOSE 8080
